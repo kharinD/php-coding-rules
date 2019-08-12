@@ -171,9 +171,100 @@ class CreateForm extends \yii\base\Model
 ```
 
 #### Сценарии 
-В случае, когда нужно разделить логику валидации одной формы, стоит создать новую форму и использовать в ней тот самый новый `use case`
 
-# пример разделения логики валидации формы
+В случае, когда нужно разделить логику валидации одной формы, 
+стоит создать новую форму и использовать в ней тот самый новый `use case`
+
+Кейс: 
+Есть форма добавления картинки в хранилище файлов.
+
+Создание: 
+- Имя (`name`) (не обязательное)
+- Категория (`category`) (обязательное)
+- Путь до файла (`url`) (обязательное)
+
+Если оставить имя пустым, то будет сгенерировано случайное имя.
+
+Редактирование: 
+- Имя (`name`) (обязательное)
+- Категория (`category`) (нельзя изменить)
+- Путь до файла (`url`) (нельзя изменить)
+
+##### Неверный путь
+Изучив документацию, неопытный разработчик сразу начнет её копировать:
+
+```php
+class AddImageForm extends \yii\base\Model
+{
+    public $name;
+    public $category;
+    public $path;
+
+    public const SCENARIO_CREATE = 'create';
+    public const SCENARIO_UPDATE = 'update';
+
+    public function rules() 
+    {
+        return [
+            [['name'], 'string', 'skipOnEmpty' => true, 'on' => self::SCENARIO_CREATE],
+            [['name'], 'string', 'skipOnEmpty' => false, 'on' => self::SCENARIO_UPDATE],
+            [['path'], ValidPathValidator::class, 'on' => self::SCENARIO_CREATE],
+            [
+                ['category'],
+                'exists',
+                'targetClass' => Category::class,
+                'targetAttribute' => ['id' => 'category'],
+                'on' => self::SCENARIO_CREATE,
+            ],
+            [['name'], 'required', 'on' => self::SCENARIO_UPDATE],
+            [['category', 'path'], 'required', 'on' => self::SCENARIO_CREATE],
+        ];
+    }
+}
+```
+
+А теперь представьте, что там 10 полей и 3 юзкейса...
+
+##### Правильный путь
+Проще всего разделить эту форму на 2 разных формы: форма создания и форма редактирования:
+```php
+class CreateImageForm extends \yii\base\Model
+{
+    public $name;
+    public $category;
+    public $path;
+
+    public function rules() 
+    {
+        return [
+            [['name'], 'string', 'skipOnEmpty' => true],
+            [['path'], ValidPathValidator::class],
+            [
+                ['category'],
+                'exists',
+                'targetClass' => Category::class,
+                'targetAttribute' => ['id' => 'category'],
+            ],
+            [['category', 'path'], 'required'],
+        ];
+    }
+}
+```
+А так же можно почистить ненужные поля, если они не будут выводиться на `frontend`
+```php
+class EditImageForm extends \yii\base\Model
+{
+    public $name;
+
+    public function rules() 
+    {
+        return [
+            [['name'], 'string', 'skipOnEmpty' => false],
+            [['name'], 'required'],
+        ];
+    }
+}
+```
 
 ## Yii::$app
 
