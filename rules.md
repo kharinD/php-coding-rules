@@ -83,6 +83,96 @@ class CreateUserForm extends \app\models\User
 class CreateUserForm extends \yii\base\Model
 ```
 
+#### Первичное заполнение
+
+Иногда одна форма может обрабатывать 2 `use case`: создание и редактирование.
+
+Это вполне нормально, когда поля и правила валидации не отличаются в этих юзкейсах.
+
+В `action`-е создания у нас нет готовых данных, которыми мы можем заполнить форму. 
+Поэтому форму можно создавать классическим способом:
+```php
+public function actionCreate() 
+{
+    $form = new CreateForm();
+    if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+        /* сохраняем */
+    }
+
+    return $this->render('create', [
+        'form' => $form,
+    ]);
+}
+```
+
+В `action`-е редактирования появляются первичные данные, которые мы достаем из базы данных по ID.
+
+##### Неверный путь
+И обычно процесс заполнения выглядит как-то так ...
+```php
+public function actionUpdate() 
+{
+    $model = $this->getModel($id);
+    $form = new CreateForm();
+    $form->modelId = $model->id;
+    $form->name = $model->name;
+    $form->phone = $model->phone;
+    /* обработка */
+}
+```
+... или так ...
+```php
+public function actionUpdate() 
+{
+    $model = $this->getModel($id);
+    $form = new CreateForm();
+    $form->setAttributes($model->attributes);
+    /* обработка */
+}
+```
+Но это засоряет контроллер и не дает четкого понятия что и куда будет записано.
+
+##### Правильный путь
+В этом случае стоит создать создающий метод, на который можно делегировать процесс заполнения формы первичными данными этой формой
+
+```php
+public function actionUpdate() 
+{
+    $model = $this->getModel($id);
+    $form = CreateForm::loadFromAr($model);
+    if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+        /* сохраняем */
+    }
+
+    return $this->render('create', [
+        'form' => $form,
+    ]);
+}
+```
+```php
+class CreateForm extends \yii\base\Model
+{
+    public $modelId;
+    public $phone;
+
+    public static function loadFromAr(User $user) 
+    {
+        $model = new self([
+            'modelId' => $user->id,
+            'name' => $user->name,
+            'phone' => $user->phone,
+        ]);
+        
+        return $model;
+    } 
+}
+```
+
+#### Сценарии 
+В случае, когда нужно разделить логику валидации одной формы, стоит создать новую форму и использовать в ней тот самый новый `use case`
+
+# пример разделения логики валидации формы
+
 ## Yii::$app
 
 #### <span style="color: red">Запрещается использовать вне `controller` и `view`-файлов</span>
@@ -123,7 +213,8 @@ class PriceFormatter
     }
 }
 ```
-стоит такого избегать, и вот план к побегу:
+Стоит такого избегать, и вот план к побегу:
+
 1. Сначала нужно создать `Interface` сервиса, который предстоит абстрагивать
     ```php
     interface FormatterInterface
