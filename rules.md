@@ -17,7 +17,8 @@
 ```php
 class User extends \yii\db\ActiveRecord 
 {
-    public function rules() {
+    public function rules() 
+    {
         return [
             [
                 ['phone'], 
@@ -38,7 +39,8 @@ class User extends \yii\db\ActiveRecord
 ```php
 class ChangePhoneForm extends \yii\base\Model 
 {
-    public function rules() {
+    public function rules() 
+    {
         return [
             [
                 ['phone'], 
@@ -60,7 +62,8 @@ class ChangePhoneForm extends \yii\base\Model
 ```php
 class User extends \yii\db\ActiveRecord 
 {
-    public function rules() {
+    public function rules() 
+    {
         return [
             [['phone'], 'string', 'max' => 255, 'skipOnEmpty' => false],
         ];
