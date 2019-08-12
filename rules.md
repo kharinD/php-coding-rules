@@ -24,7 +24,7 @@ class User extends \yii\db\ActiveRecord
                 ['phone'], 
                 'string', 
                 'max' => self::PHONE_MAX_LENGTH, 
-                'min' => self::PHONE_MIN_LENGTH],
+                'min' => self::PHONE_MIN_LENGTH,
             ],
             [
                 ['phone'],
@@ -46,7 +46,7 @@ class ChangePhoneForm extends \yii\base\Model
                 ['phone'], 
                 'string', 
                 'max' => self::PHONE_MAX_LENGTH, 
-                'min' => self::PHONE_MIN_LENGTH],
+                'min' => self::PHONE_MIN_LENGTH,
             ],
             [
                 ['phone'],
