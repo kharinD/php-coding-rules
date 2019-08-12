@@ -1,14 +1,14 @@
-## Правила кодирования для Yii2
+# Правила кодирования для Yii2
 Данная страница посвещена правилам кодирования для разработке на фреймворке Yii2.
 
 Здесь будут описаны примеры как делать не нужно, и как можно сделать взамен неправильному
 
 Стоит следовать этим правилам, если хотите не ломать основы архитектуры, писать чистый и тестируемый код.
 
-### Сущности
+## Сущности
 Сущность `ActiveRecord` - это проекция таблицы на код. Поэтому не стоит делать из проекции что-то большее.
 
-##### Правила валидации
+#### Правила валидации
 
 Правила валидации должны затрагивать лишь правила сохранения в базу и не должны покрывать `use case`, 
 в котором сущность используется.
@@ -71,10 +71,9 @@ class User extends \yii\db\ActiveRecord
 }
 ```
 
+## Формы
 
-### Формы
-
-##### Наследование
+#### Наследование
 При работе с формами запрещается наследоваться от основной модели `ActiveRecord` сущности:
 ```php
 class CreateUserForm extends \app\models\User
@@ -84,7 +83,7 @@ class CreateUserForm extends \app\models\User
 class CreateUserForm extends \yii\base\Model
 ```
 
-### Yii::$app
+## Yii::$app
 
 #### <span style="color: red">Запрещается использовать вне `controller` и `view`-файлов</span>
 
@@ -111,7 +110,6 @@ Yii::$app->someService->someMethod($data);
 
 Если не предполагается писать другие реализации для вашего сервиса,
 можно просто прокидывать нужный сервис через конструктор или с помощью `Yii::$app->container`
-
 
 
 ##### Пример: Formatter
@@ -152,8 +150,8 @@ class PriceFormatter
         FormatterInterface::class => YiiFormatter::class,
     ]);
     ```
-    <span color="grey">Теперь контейнер приложения, когда загрузит конфиг будет отдавать по алиасу полному имени интерфейса `FormatterInterface` 
-    реализацию `YiiFormatter`</span>
+    Теперь, когда контейнер приложения загрузит конфиг, он будет отдавать по алиасу полному имени интерфейса `FormatterInterface` 
+    реализацию `YiiFormatter`
 
 4. Наконец, теперь нужно:
     - "прокидывать" в конструктор интерфейс `FormatterInterface`,
@@ -176,7 +174,16 @@ class PriceFormatter
     }
     ```
 
-##### Работа `Request`
+#### Работа с `Request`
+Хорошим тоном стоит передавать объект `Request` в `action`, но в Yii2 этого не сделали.
+
+Объект `Request` запрещается получать не в `controller` и `view` файлах.
+
+Вместо этого стоит передавать `Request` в аргументе метода.
+
+##### Пример: Определение OS устройства по заголовку **Authorization-Token**
+В контроллере вызывается метод `OSHelper::getOS()`, в котором из `Yii::$app` берется объект `Request`
+
 ```php
 class ApiController extends Controller
 {
@@ -195,7 +202,7 @@ class OSHelper
 {
     public static function getOS(): int
     {
-        $token = Yii::$app->request->getHeader('Authorization Token');
+        $token = Yii::$app->request->getHeader('Authorization-Token');
         
         if ($token === self::TOKEN_ANDROID) {
             return self::OS_ANDROID;
@@ -210,7 +217,10 @@ class OSHelper
 }
 ```
 
-Вместо это стоит передать объект класса `\yii\web\Request` параметров в этот хелпер
+Вместо этого нужно передать объект класса `\yii\web\Request` аргументом в метод `getOS` хелпера `OSHelper`.
+
+А так же можно избавиться от статического метода. Создание хелпера можно поручить `Dependency Injection Container`, 
+а можно и "по-старинке" - через `new`.
 
 ```php
 class ApiController extends Controller
@@ -249,3 +259,5 @@ class OSHelper
     }
 }
 ```
+
+Теперь в метод `OSHelper::getOS` можно передать сколь угодно объектов `Request` и узнать **OS** каждого
