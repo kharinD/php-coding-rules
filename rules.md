@@ -74,6 +74,66 @@ class User extends \yii\db\ActiveRecord
 
 ## Формы
 
+#### Назначение и применимость
+
+Формы должны использоваться для агрегации и валидации данных. 
+
+Ни для чего другого формы не должны использоваться.
+
+#### Использование
+
+Использовать форму и не валидировать данные странная затея. 
+
+Если предполагается загружать и валидировать форму, 
+то нельзя выносить метод `$form->load()` вне условных конструкций `if`.
+
+##### Неверное использование
+###### Кейс 1: Не проверяем загрузилась ли форма, но все равно валидируем.
+```php
+public function actionCreate() 
+{
+    $form = new CreateForm();
+    $form->load(Yii::$app->request->post());
+    if ($form->validate()) {
+        /* сохранение */
+    }
+    
+    return $this->render('create', [
+        'form' => $form,
+    ]);
+}
+```
+###### Кейс 2: Не валидируем форму, просто загружаем в нее данные
+```php
+public function actionCreate() 
+{
+    $form = new CreateForm();
+    if ($form->load(Yii::$app->request->post())) {
+        /* сохранение */
+    }
+    
+    return $this->render('create', [
+        'form' => $form,
+    ]);
+}
+```
+
+##### Правильное использование
+
+```php
+public function actionCreate() 
+{
+    $form = new CreateForm();
+    if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+        /* сохранение */
+    }
+    
+    return $this->render('create', [
+        'form' => $form,
+    ]);
+}
+```
+
 #### Наследование
 При работе с формами запрещается наследоваться от основной модели `ActiveRecord` сущности:
 ```php
