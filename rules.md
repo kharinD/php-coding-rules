@@ -169,7 +169,7 @@ public function actionCreate()
 В `action`-е редактирования появляются первичные данные, которые мы достаем из базы данных по ID.
 
 ##### Неверный путь
-И обычно процесс заполнения выглядит как-то так ...
+Обычно процесс заполнения выглядит как-то так ...
 ```php
 public function actionUpdate() 
 {
@@ -188,6 +188,15 @@ public function actionUpdate()
     $model = $this->getModel($id);
     $form = new CreateForm();
     $form->setAttributes($model->attributes);
+    /* обработка */
+}
+```
+... или даже так ...
+```php
+public function actionUpdate() 
+{
+    $model = $this->getModel($id);
+    $form = new CreateForm($model);
     /* обработка */
 }
 ```
