@@ -119,7 +119,7 @@ public function actionCreate()
 ```
 
 ##### Правильное использование
-
+###### Сначала загружаем форму, а после, если загрузка прошла, валидируем ее.
 ```php
 public function actionCreate() 
 {
