@@ -17,7 +17,7 @@
 
 Предлагаю вашему вниманию список плагинов для PHPStorm.
 
-##### Общие плагины
+#### Общие плагины
 - [Php Inspections ​(EA Extended)](https://plugins.jetbrains.com/plugin/7622-php-inspections-ea-extended-)
 
     Умеет очень многое и подсказывает каждую упущенную мелочь.     
@@ -38,9 +38,8 @@
 - [String Manipulation](https://plugins.jetbrains.com/plugin/2162-string-manipulation)
 
     Полезный плагин, позволяющий делать различные операциями со строками.
-    
-    
-##### Плагины для разработки на Yii2
+
+#### Плагины для разработки на Yii2
 
 - [Yii2 Support](https://plugins.jetbrains.com/plugin/9388-yii2-support)
 
@@ -55,7 +54,7 @@
     На момент написания имеет функционал для подсказки упущенных переводов и `@property`
     
     
-##### Плагины для разработки на Symfony
+#### Плагины для разработки на Symfony
 
 - [PHP Annotations](https://plugins.jetbrains.com/plugin/7320-php-annotations)
 
