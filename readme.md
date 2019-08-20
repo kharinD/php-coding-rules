@@ -2,9 +2,12 @@
 ##### `Pull Request`-ы поддерживаются
 
 ### Фреймворки:
-- [Yii2](yii2/readme.md)
+- [Yii2](Yii2/readme.md)
 
 ### Технологии
-- [PHPDoc](phpdoc/readme.md)
+- [PHPDoc](PHPDoc/readme.md)
+
+### IDE
+- [PHPStorm](PhpStorm/readme.md)
 
 
