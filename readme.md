@@ -12,8 +12,11 @@
 
 ### Технологии
 - [PHPDoc](PHPDoc/readme.md)
-- [DI] *(needs to develop)*
+- [Dependency Injection] *(needs to develop)*
 
+### Принципы разработки
+- [SOLID](principles/SOLID/readme.md)
+- [DRY](principles/DRY/readme.md)
 
 ### IDE
 - [PHPStorm](PhpStorm/readme.md)
