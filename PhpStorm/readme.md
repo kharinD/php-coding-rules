@@ -10,7 +10,7 @@
 Предлагаю небольшую правки для схемы PHPStorm для разработки на PHP.
 Приветствуются правки с пояснением зачем и чем лучше.
 
-Файл скачать можно по ссылке <a href="PHPStorm%20PHP%20Modernized%20Code%20Style.xml" download>скачать</a>
+Файл скачать можно по ссылке <a href="PHPStorm%20PHP%20Modernized%20Code%20Style.xml" download="PHPStorm PHP Modernized Code Style.xml">скачать</a>
 
 #### Небольшой гайд по плагинам
 
