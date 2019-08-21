@@ -8,14 +8,17 @@
     <option name="ELSE_IF_STYLE" value="COMBINE" />
     <option name="VARIABLE_NAMING_STYLE" value="CAMEL_CASE" />
     <option name="BLANK_LINES_BEFORE_RETURN_STATEMENT" value="1" />
+    <option name="KEEP_RPAREN_AND_LBRACE_ON_ONE_LINE" value="true" />
+    <option name="KEEP_BLANK_LINES_AFTER_LBRACE" value="0" />
     <option name="FORCE_SHORT_DECLARATION_ARRAY_STYLE" value="true" />
     <option name="PHPDOC_USE_FQCN" value="true" />
   </PHPCodeStyleSettings>
   <codeStyleSettings language="PHP">
     <option name="RIGHT_MARGIN" value="120" />
     <option name="KEEP_CONTROL_STATEMENT_IN_ONE_LINE" value="false" />
-    <option name="KEEP_BLANK_LINES_IN_DECLARATIONS" value="1" />
-    <option name="KEEP_BLANK_LINES_BEFORE_RBRACE" value="1" />
+    <option name="KEEP_BLANK_LINES_IN_DECLARATIONS" value="0" />
+    <option name="KEEP_BLANK_LINES_BEFORE_RBRACE" value="0" />
+    <option name="BLANK_LINES_AFTER_PACKAGE" value="1" />
     <option name="ALIGN_MULTILINE_PARAMETERS" value="false" />
     <option name="ALIGN_MULTILINE_FOR" value="false" />
     <option name="ALIGN_MULTILINE_BINARY_OPERATION" value="true" />
